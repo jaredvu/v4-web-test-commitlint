@@ -1,15 +1,13 @@
-name: 'Lint PR'
+name: pr-name-linter
 on:
-  pull_request_target:
-    types:
-      - opened
-      - edited
-      - synchronize
+  pull_request:
+    types: ['opened', 'edited', 'reopened', 'synchronize']
 
 jobs:
-  main:
+  lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: dreampulse/action-lint-pull-request-title@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@v2
+      - name: Install Dependencies
+        run: npm install @commitlint/config-conventional
+      - uses: cognitedata/lint-pr-title-action@v0.2.0
